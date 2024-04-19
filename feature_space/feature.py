@@ -90,8 +90,8 @@ class Feature:
     features: list['Feature'] = field(default_factory=list)
     kwargs: P = field(default_factory=dict)
     calculator: Callable[['Feature'], pd.Series] = field(default=None, repr=False)
-    data: pd.DataFrame = field(default=None, repr=False)
-    result: pd.Series = field(default=None, repr=False)
+    data: pd.DataFrame | None = field(default=None, repr=False)
+    result: pd.Series | None = field(default=None, repr=False)
 
     def __hash__(self) -> int:
 
@@ -138,6 +138,11 @@ class Feature:
         data[self.name] = self.result = self.calculator(self)
 
         return self
+
+    def clear(self) -> None:
+
+        self.result = None
+        self.data = None
 
 class Column(Feature):
 

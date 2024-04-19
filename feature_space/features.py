@@ -406,7 +406,7 @@ class SuperTrend(Feature):
         self.factor = factor
 
         super().__init__(
-            name=name or f'Super_Trend_{self.span}_{self.factor}',
+            name=name or f'{self.feature.name}_Super_Trend_{self.span}_{self.factor}',
             features=[self.atr, self.feature],
             calculator=lambda f: super_trend(
                 data=self.feature.result, atr=self.atr.result,

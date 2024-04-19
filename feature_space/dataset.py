@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from feature_space.features import Feature
+from feature_space.feature import Feature
 
 __all__ = [
     "Dataset"
@@ -119,3 +119,18 @@ class Dataset:
         self.calculate_features(data=data, cached=cached, override=override)
 
         return self
+
+    def clear_features(self) -> None:
+
+        for feature in self.features:
+            feature.clear()
+
+    def clear_datasets(self) -> None:
+
+        for dataset in self.datasets:
+            dataset.clear()
+
+    def clear(self) -> None:
+
+        self.clear_datasets()
+        self.clear_features()
