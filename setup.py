@@ -22,7 +22,7 @@ def main() -> None:
         include=[],
         requirements="requirements.txt",
         name='feature-space',
-        version='0.0.0',
+        version='0.0.1',
         description=(
             "A module framework for constructing a network of features "
             "supporting each other, yet each feature is calculated only once."

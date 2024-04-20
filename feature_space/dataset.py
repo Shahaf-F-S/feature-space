@@ -24,7 +24,7 @@ class Dataset:
     @property
     def all_features_names(self) -> list[str]:
 
-        return list(set(self.datasets_features_names + self.features_names))
+        return [f.name for f in self.all_features]
 
     @property
     def features_names(self) -> list[str]:
@@ -39,27 +39,30 @@ class Dataset:
     @property
     def datasets_features_names(self) -> list[str]:
 
-        names = set()
-
-        for dataset in self.datasets:
-            names.update(dataset.all_features_names)
-
-        return list(names)
+        return [f.name for f in self.datasets_features]
 
     @property
     def datasets_features(self) -> list[Feature]:
 
-        features = set()
+        features = []
 
         for dataset in self.datasets:
-            features.update(dataset.all_features)
+            for feature in dataset.all_features:
+                if feature not in features:
+                    features.append(feature)
 
-        return list(features)
+        return features
 
     @property
     def all_features(self) -> list[Feature]:
 
-        return list(set(self.datasets_features + self.features_names))
+        features = self.features.copy()
+
+        for feature in self.datasets_features:
+            if feature not in features:
+                features.append(feature)
+
+        return features
 
     @property
     def results(self) -> list[pd.Series]:
