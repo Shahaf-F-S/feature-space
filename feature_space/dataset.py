@@ -1,6 +1,7 @@
 # dataset.py
 
-import pickle
+import dill
+from uuid import uuid4
 from dataclasses import dataclass, field
 
 import pandas as pd
@@ -15,6 +16,7 @@ __all__ = [
 class Dataset:
 
     name: str = 'Dataset'
+    id: str = field(default_factory=lambda: str(uuid4()))
     features: list[Feature] = field(default_factory=list)
     datasets: list['Dataset'] = field(default_factory=list)
 
@@ -91,13 +93,13 @@ class Dataset:
     def save(self, path: str) -> None:
 
         with open(path, 'wb') as file:
-            pickle.dump(self, file)
+            dill.dump(self, file)
 
     @classmethod
     def load(cls, path: str) -> "Feature":
 
         with open(path, 'rb') as file:
-            return pickle.load(file)
+            return dill.load(file)
 
     def calculate_features(
             self,

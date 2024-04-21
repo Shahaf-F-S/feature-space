@@ -1,6 +1,6 @@
 # features.py
 
-import pickle
+import dill
 from uuid import uuid4
 from typing import Callable, ParamSpec, ParamSpecKwargs
 from dataclasses import dataclass, field
@@ -65,13 +65,13 @@ class Feature:
     def save(self, path: str) -> None:
 
         with open(path, 'wb') as file:
-            pickle.dump(self, file)
+            dill.dump(self, file)
 
     @classmethod
     def load(cls, path: str) -> "Feature":
 
         with open(path, 'rb') as file:
-            return pickle.load(file)
+            return dill.load(file)
 
     def calculate(
             self,
