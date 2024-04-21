@@ -62,7 +62,18 @@ class Feature:
 
         return [f.name for f in self.features]
 
+    def copy(self) -> "Feature":
+
+        data = self.__reduce__()
+
+        copy = data[0](type(self), data[1][0], data[-1])
+
+        return copy
+
     def save(self, path: str) -> None:
+
+        copy = self.copy()
+        copy.clear()
 
         with open(path, 'wb') as file:
             dill.dump(self, file)

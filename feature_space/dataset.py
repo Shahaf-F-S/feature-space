@@ -90,10 +90,21 @@ class Dataset:
 
         return self.features_calculated and self.datasets_calculated
 
+    def copy(self) -> "Dataset":
+
+        data = self.__reduce__()
+
+        copy = data[0](type(self), data[1][0], data[-1])
+
+        return copy
+
     def save(self, path: str) -> None:
 
+        copy = self.copy()
+        copy.clear()
+
         with open(path, 'wb') as file:
-            dill.dump(self, file)
+            dill.dump(copy, file)
 
     @classmethod
     def load(cls, path: str) -> "Feature":
