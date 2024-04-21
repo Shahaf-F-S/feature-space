@@ -1,5 +1,6 @@
 # dataset.py
 
+import pickle
 from dataclasses import dataclass, field
 
 import pandas as pd
@@ -86,6 +87,17 @@ class Dataset:
     def calculated(self) -> bool:
 
         return self.features_calculated and self.datasets_calculated
+
+    def save(self, path: str) -> None:
+
+        with open(path, 'wb') as file:
+            pickle.dump(self, file)
+
+    @classmethod
+    def load(cls, path: str) -> "Feature":
+
+        with open(path, 'rb') as file:
+            return pickle.load(file)
 
     def calculate_features(
             self,

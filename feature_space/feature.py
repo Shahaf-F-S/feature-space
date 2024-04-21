@@ -1,5 +1,7 @@
 # features.py
 
+import pickle
+from uuid import uuid4
 from typing import Callable, ParamSpec, ParamSpecKwargs
 from dataclasses import dataclass, field
 
@@ -17,6 +19,7 @@ P = ParamSpecKwargs(_P)
 class Feature:
 
     name: str
+    id: str = field(default_factory=lambda: str(uuid4()))
     features: list['Feature'] = field(default_factory=list)
     kwargs: P = field(default_factory=dict)
     calculator: Callable[['Feature'], pd.Series] = field(default=None, repr=False)
@@ -43,9 +46,32 @@ class Feature:
         return names
 
     @property
+    def all_features(self) -> set['Feature']:
+
+        features = set()
+
+        for feature in self.features:
+            features.update(feature.all_features)
+
+        features.add(self)
+
+        return features
+
+    @property
     def features_names(self) -> list[str]:
 
         return [f.name for f in self.features]
+
+    def save(self, path: str) -> None:
+
+        with open(path, 'wb') as file:
+            pickle.dump(self, file)
+
+    @classmethod
+    def load(cls, path: str) -> "Feature":
+
+        with open(path, 'rb') as file:
+            return pickle.load(file)
 
     def calculate(
             self,

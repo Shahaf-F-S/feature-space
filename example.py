@@ -60,7 +60,10 @@ print(df)
 
 macd_indicators = Dataset(
     name='MACD_Features',
-    features=[close_sma_20, close_momentum, macd, macd_signal_15, macd_histogram]
+    features=[
+        close_sma_20, close_momentum,
+        macd, macd_signal_15, macd_histogram
+    ]
 )
 
 macd_indicators.calculate(df)

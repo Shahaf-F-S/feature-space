@@ -103,3 +103,9 @@ if you wish to override existing data, you can specify.
 change_indicators.clear()
 change_indicators.calculate(df, override=True)
 ```
+
+Save and load a whole dataset with its inter-dependency of features:
+```python
+change_indicators.save('dataset.pkl')
+change_indicators = Dataset.load('dataset.pkl')
+```
