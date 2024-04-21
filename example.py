@@ -70,4 +70,4 @@ macd_indicators.calculate(df)
 
 df.dropna(inplace=True)
 
-print(df)
+print(macd_indicators.copy())

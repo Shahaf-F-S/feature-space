@@ -19,7 +19,7 @@ P = ParamSpecKwargs(_P)
 class Feature:
 
     name: str
-    id: str = field(default_factory=lambda: str(uuid4()))
+    id: str = field(default_factory=lambda: str(uuid4()), repr=False)
     features: list['Feature'] = field(default_factory=list)
     kwargs: P = field(default_factory=dict)
     calculator: Callable[['Feature'], pd.Series] = field(default=None, repr=False)
@@ -64,9 +64,10 @@ class Feature:
 
     def copy(self) -> "Feature":
 
-        data = self.__reduce__()
+        copy = type(self).__new__(type(self))
 
-        copy = data[0](type(self), data[1][0], data[-1])
+        for key, value in self.__reduce__()[-1].items():
+            setattr(copy, key, value)
 
         return copy
 

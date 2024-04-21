@@ -16,7 +16,7 @@ __all__ = [
 class Dataset:
 
     name: str = 'Dataset'
-    id: str = field(default_factory=lambda: str(uuid4()))
+    id: str = field(default_factory=lambda: str(uuid4()), repr=False)
     features: list[Feature] = field(default_factory=list)
     datasets: list['Dataset'] = field(default_factory=list)
 
@@ -92,9 +92,10 @@ class Dataset:
 
     def copy(self) -> "Dataset":
 
-        data = self.__reduce__()
+        copy = type(self).__new__(type(self))
 
-        copy = data[0](type(self), data[1][0], data[-1])
+        for key, value in self.__reduce__()[-1].items():
+            setattr(copy, key, value)
 
         return copy
 
